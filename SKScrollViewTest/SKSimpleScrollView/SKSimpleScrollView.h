@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SKSimpleScrollViewDelegate <NSObject>
+
+- (void)scrollToNext:(UIView *)nextView;
+
+- (void)scrollToLast:(UIView *)lastView;
+
+@end
+
 @interface SKSimpleScrollView : UIView
+
+@property (weak, nonatomic) id<SKSimpleScrollViewDelegate> delegate;
 
 @end

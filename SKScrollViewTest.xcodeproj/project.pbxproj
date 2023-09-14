@@ -13,7 +13,22 @@
 		2345A6321DE4565D00D81768 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2345A6301DE4565D00D81768 /* Main.storyboard */; };
 		2345A6341DE4565D00D81768 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2345A6331DE4565D00D81768 /* Assets.xcassets */; };
 		2345A6371DE4565E00D81768 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2345A6351DE4565D00D81768 /* LaunchScreen.storyboard */; };
-		2345A6411DE456DB00D81768 /* SKSimpleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2345A6401DE456DB00D81768 /* SKSimpleScrollView.m */; };
+		23B5909F2AB07B6700058DA4 /* SKMultiScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B5909E2AB07B6700058DA4 /* SKMultiScrollView.m */; };
+		23B590A42AB1573600058DA4 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B590A22AB1573600058DA4 /* iCarousel.m */; };
+		23B590A72AB1576000058DA4 /* iCarouselTestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B590A62AB1576000058DA4 /* iCarouselTestView.m */; };
+		23B5AC912AB19A6D00058DA4 /* DYLineFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B5AC902AB19A6D00058DA4 /* DYLineFlowView.m */; };
+		23B5C86F2AB1B17F00058DA4 /* HWWeakTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B5C86E2AB1B17F00058DA4 /* HWWeakTimer.m */; };
+		23E31A6D2AB0551C00770F13 /* SKTestCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E31A6C2AB0551C00770F13 /* SKTestCollectionViewCell.m */; };
+		23E3FE722AB040F300770F13 /* img2.png in Resources */ = {isa = PBXBuildFile; fileRef = 23E3FE6E2AB040F300770F13 /* img2.png */; };
+		23E3FE732AB040F300770F13 /* img3.png in Resources */ = {isa = PBXBuildFile; fileRef = 23E3FE6F2AB040F300770F13 /* img3.png */; };
+		23E3FE742AB040F300770F13 /* img1.png in Resources */ = {isa = PBXBuildFile; fileRef = 23E3FE702AB040F300770F13 /* img1.png */; };
+		23E3FE752AB040F300770F13 /* img4.png in Resources */ = {isa = PBXBuildFile; fileRef = 23E3FE712AB040F300770F13 /* img4.png */; };
+		23E3FE7E2AB0415900770F13 /* SKSimpleSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE7C2AB0415900770F13 /* SKSimpleSlider.m */; };
+		23E3FE7F2AB0415900770F13 /* SKSimpleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE7D2AB0415900770F13 /* SKSimpleScrollView.m */; };
+		23E3FE842AB0416F00770F13 /* SKCarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE812AB0416F00770F13 /* SKCarouselView.m */; };
+		23E3FE8A2AB0419700770F13 /* SKCoverFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE882AB0419700770F13 /* SKCoverFlowView.m */; };
+		23E3FE8B2AB0419700770F13 /* SKCoverBoundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE892AB0419700770F13 /* SKCoverBoundView.m */; };
+		23E3FE8F2AB042AF00770F13 /* SKCarouselViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE8E2AB042AF00770F13 /* SKCarouselViewLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +42,36 @@
 		2345A6331DE4565D00D81768 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2345A6361DE4565D00D81768 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2345A6381DE4565E00D81768 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2345A63F1DE456DB00D81768 /* SKSimpleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSimpleScrollView.h; sourceTree = "<group>"; };
-		2345A6401DE456DB00D81768 /* SKSimpleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSimpleScrollView.m; sourceTree = "<group>"; };
+		23B5909D2AB07B6700058DA4 /* SKMultiScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKMultiScrollView.h; sourceTree = "<group>"; };
+		23B5909E2AB07B6700058DA4 /* SKMultiScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKMultiScrollView.m; sourceTree = "<group>"; };
+		23B590A22AB1573600058DA4 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		23B590A32AB1573600058DA4 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		23B590A52AB1576000058DA4 /* iCarouselTestView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iCarouselTestView.h; sourceTree = "<group>"; };
+		23B590A62AB1576000058DA4 /* iCarouselTestView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iCarouselTestView.m; sourceTree = "<group>"; };
+		23B590A82AB18D2D00058DA4 /* SKCarouselViewLayoutProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKCarouselViewLayoutProtocol.h; sourceTree = "<group>"; };
+		23B5AC8F2AB19A6D00058DA4 /* DYLineFlowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYLineFlowView.h; sourceTree = "<group>"; };
+		23B5AC902AB19A6D00058DA4 /* DYLineFlowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYLineFlowView.m; sourceTree = "<group>"; };
+		23B5C86D2AB1B17F00058DA4 /* HWWeakTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWWeakTimer.h; sourceTree = "<group>"; };
+		23B5C86E2AB1B17F00058DA4 /* HWWeakTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWWeakTimer.m; sourceTree = "<group>"; };
+		23E31A6B2AB0551B00770F13 /* SKTestCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKTestCollectionViewCell.h; sourceTree = "<group>"; };
+		23E31A6C2AB0551C00770F13 /* SKTestCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKTestCollectionViewCell.m; sourceTree = "<group>"; };
+		23E3FE6E2AB040F300770F13 /* img2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img2.png; sourceTree = "<group>"; };
+		23E3FE6F2AB040F300770F13 /* img3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img3.png; sourceTree = "<group>"; };
+		23E3FE702AB040F300770F13 /* img1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img1.png; sourceTree = "<group>"; };
+		23E3FE712AB040F300770F13 /* img4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img4.png; sourceTree = "<group>"; };
+		23E3FE792AB0415900770F13 /* SKSlideCellProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSlideCellProtocol.h; sourceTree = "<group>"; };
+		23E3FE7A2AB0415900770F13 /* SKSimpleSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSimpleSlider.h; sourceTree = "<group>"; };
+		23E3FE7B2AB0415900770F13 /* SKSimpleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSimpleScrollView.h; sourceTree = "<group>"; };
+		23E3FE7C2AB0415900770F13 /* SKSimpleSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSimpleSlider.m; sourceTree = "<group>"; };
+		23E3FE7D2AB0415900770F13 /* SKSimpleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSimpleScrollView.m; sourceTree = "<group>"; };
+		23E3FE812AB0416F00770F13 /* SKCarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCarouselView.m; sourceTree = "<group>"; };
+		23E3FE832AB0416F00770F13 /* SKCarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKCarouselView.h; sourceTree = "<group>"; };
+		23E3FE862AB0419700770F13 /* SKCoverBoundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKCoverBoundView.h; sourceTree = "<group>"; };
+		23E3FE872AB0419700770F13 /* SKCoverFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKCoverFlowView.h; sourceTree = "<group>"; };
+		23E3FE882AB0419700770F13 /* SKCoverFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoverFlowView.m; sourceTree = "<group>"; };
+		23E3FE892AB0419700770F13 /* SKCoverBoundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoverBoundView.m; sourceTree = "<group>"; };
+		23E3FE8D2AB042AF00770F13 /* SKCarouselViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKCarouselViewLayout.h; sourceTree = "<group>"; };
+		23E3FE8E2AB042AF00770F13 /* SKCarouselViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKCarouselViewLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,13 +104,22 @@
 		2345A6261DE4565D00D81768 /* SKScrollViewTest */ = {
 			isa = PBXGroup;
 			children = (
-				2345A63E1DE4569300D81768 /* SKSimpleScrollView */,
 				2345A62A1DE4565D00D81768 /* AppDelegate.h */,
 				2345A62B1DE4565D00D81768 /* AppDelegate.m */,
+				23B5AC8E2AB19A5E00058DA4 /* DYLineFlowView */,
+				23B590A12AB1573600058DA4 /* iCarousel */,
+				23B5909C2AB07B3800058DA4 /* SKMultiScrollView */,
+				23E3FE852AB0419700770F13 /* SKCoverFlowScrollView */,
+				23E3FE802AB0416F00770F13 /* SKCarouselView */,
+				23E3FE782AB0415900770F13 /* SKSimpleScrollView */,
 				2345A62D1DE4565D00D81768 /* ViewController.h */,
 				2345A62E1DE4565D00D81768 /* ViewController.m */,
 				2345A6301DE4565D00D81768 /* Main.storyboard */,
 				2345A6331DE4565D00D81768 /* Assets.xcassets */,
+				23E3FE702AB040F300770F13 /* img1.png */,
+				23E3FE6E2AB040F300770F13 /* img2.png */,
+				23E3FE6F2AB040F300770F13 /* img3.png */,
+				23E3FE712AB040F300770F13 /* img4.png */,
 				2345A6351DE4565D00D81768 /* LaunchScreen.storyboard */,
 				2345A6381DE4565E00D81768 /* Info.plist */,
 				2345A6271DE4565D00D81768 /* Supporting Files */,
@@ -83,13 +135,72 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		2345A63E1DE4569300D81768 /* SKSimpleScrollView */ = {
+		23B5909C2AB07B3800058DA4 /* SKMultiScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				2345A63F1DE456DB00D81768 /* SKSimpleScrollView.h */,
-				2345A6401DE456DB00D81768 /* SKSimpleScrollView.m */,
+				23B5909D2AB07B6700058DA4 /* SKMultiScrollView.h */,
+				23B5909E2AB07B6700058DA4 /* SKMultiScrollView.m */,
 			);
-			name = SKSimpleScrollView;
+			path = SKMultiScrollView;
+			sourceTree = "<group>";
+		};
+		23B590A12AB1573600058DA4 /* iCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				23B590A32AB1573600058DA4 /* iCarousel.h */,
+				23B590A22AB1573600058DA4 /* iCarousel.m */,
+				23B590A52AB1576000058DA4 /* iCarouselTestView.h */,
+				23B590A62AB1576000058DA4 /* iCarouselTestView.m */,
+			);
+			path = iCarousel;
+			sourceTree = "<group>";
+		};
+		23B5AC8E2AB19A5E00058DA4 /* DYLineFlowView */ = {
+			isa = PBXGroup;
+			children = (
+				23B5C86D2AB1B17F00058DA4 /* HWWeakTimer.h */,
+				23B5C86E2AB1B17F00058DA4 /* HWWeakTimer.m */,
+				23B5AC8F2AB19A6D00058DA4 /* DYLineFlowView.h */,
+				23B5AC902AB19A6D00058DA4 /* DYLineFlowView.m */,
+			);
+			path = DYLineFlowView;
+			sourceTree = "<group>";
+		};
+		23E3FE782AB0415900770F13 /* SKSimpleScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				23E3FE792AB0415900770F13 /* SKSlideCellProtocol.h */,
+				23E3FE7A2AB0415900770F13 /* SKSimpleSlider.h */,
+				23E3FE7C2AB0415900770F13 /* SKSimpleSlider.m */,
+				23E3FE7B2AB0415900770F13 /* SKSimpleScrollView.h */,
+				23E3FE7D2AB0415900770F13 /* SKSimpleScrollView.m */,
+			);
+			path = SKSimpleScrollView;
+			sourceTree = "<group>";
+		};
+		23E3FE802AB0416F00770F13 /* SKCarouselView */ = {
+			isa = PBXGroup;
+			children = (
+				23E3FE832AB0416F00770F13 /* SKCarouselView.h */,
+				23E3FE812AB0416F00770F13 /* SKCarouselView.m */,
+				23B590A82AB18D2D00058DA4 /* SKCarouselViewLayoutProtocol.h */,
+				23E3FE8D2AB042AF00770F13 /* SKCarouselViewLayout.h */,
+				23E3FE8E2AB042AF00770F13 /* SKCarouselViewLayout.m */,
+				23E31A6B2AB0551B00770F13 /* SKTestCollectionViewCell.h */,
+				23E31A6C2AB0551C00770F13 /* SKTestCollectionViewCell.m */,
+			);
+			path = SKCarouselView;
+			sourceTree = "<group>";
+		};
+		23E3FE852AB0419700770F13 /* SKCoverFlowScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				23E3FE872AB0419700770F13 /* SKCoverFlowView.h */,
+				23E3FE882AB0419700770F13 /* SKCoverFlowView.m */,
+				23E3FE862AB0419700770F13 /* SKCoverBoundView.h */,
+				23E3FE892AB0419700770F13 /* SKCoverBoundView.m */,
+			);
+			path = SKCoverFlowScrollView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,6 +234,7 @@
 				TargetAttributes = {
 					2345A6231DE4565D00D81768 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = H72UPBF6UW;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -132,6 +244,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -150,9 +263,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23E3FE752AB040F300770F13 /* img4.png in Resources */,
 				2345A6371DE4565E00D81768 /* LaunchScreen.storyboard in Resources */,
+				23E3FE732AB040F300770F13 /* img3.png in Resources */,
 				2345A6341DE4565D00D81768 /* Assets.xcassets in Resources */,
+				23E3FE722AB040F300770F13 /* img2.png in Resources */,
 				2345A6321DE4565D00D81768 /* Main.storyboard in Resources */,
+				23E3FE742AB040F300770F13 /* img1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,9 +280,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23E31A6D2AB0551C00770F13 /* SKTestCollectionViewCell.m in Sources */,
+				23B5909F2AB07B6700058DA4 /* SKMultiScrollView.m in Sources */,
+				23B590A72AB1576000058DA4 /* iCarouselTestView.m in Sources */,
+				23B5C86F2AB1B17F00058DA4 /* HWWeakTimer.m in Sources */,
+				23B5AC912AB19A6D00058DA4 /* DYLineFlowView.m in Sources */,
 				2345A62F1DE4565D00D81768 /* ViewController.m in Sources */,
-				2345A6411DE456DB00D81768 /* SKSimpleScrollView.m in Sources */,
+				23E3FE842AB0416F00770F13 /* SKCarouselView.m in Sources */,
 				2345A62C1DE4565D00D81768 /* AppDelegate.m in Sources */,
+				23B590A42AB1573600058DA4 /* iCarousel.m in Sources */,
+				23E3FE8A2AB0419700770F13 /* SKCoverFlowView.m in Sources */,
+				23E3FE7F2AB0415900770F13 /* SKSimpleScrollView.m in Sources */,
+				23E3FE8B2AB0419700770F13 /* SKCoverBoundView.m in Sources */,
+				23E3FE8F2AB042AF00770F13 /* SKCarouselViewLayout.m in Sources */,
+				23E3FE7E2AB0415900770F13 /* SKSimpleSlider.m in Sources */,
 				2345A6291DE4565D00D81768 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,8 +414,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H72UPBF6UW;
 				INFOPLIST_FILE = SKScrollViewTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.skate.SKScrollViewTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -298,8 +427,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H72UPBF6UW;
 				INFOPLIST_FILE = SKScrollViewTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.skate.SKScrollViewTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -325,6 +455,7 @@
 				2345A63D1DE4565E00D81768 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
