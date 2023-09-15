@@ -55,6 +55,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.clipsToBounds = YES;
         [self setup];
         [self addSubview:self.scrollView];
         
@@ -123,22 +124,15 @@
         }
                         
         for (NSInteger index = 0; index < self.pageCount; index++) {
-            [_cells addObject:[NSNull null]];
+            [self.cells addObject:[NSNull null]];
         }
         
         self.scrollView.frame = CGRectMake(0, 0, self.pageSize.width, self.pageSize.height);
         self.scrollView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-        switch (self.direction) {
-            case DYLineFlowViewDerectionHorizontal: {
-                self.scrollView.contentSize = CGSizeMake(self.pageSize.width * self.pageCount,0);
-            }
-                break;
-            case DYLineFlowViewDerectionVertical: {
-                self.scrollView.contentSize = CGSizeMake(0 , self.pageSize.height * self.pageCount);
-            }
-                break;
-            default:
-                break;
+        if (self.isHorizontal) {
+            self.scrollView.contentSize = CGSizeMake(self.pageSize.width * self.pageCount,0);
+        } else {
+            self.scrollView.contentSize = CGSizeMake(0 , self.pageSize.height * self.pageCount);
         }
         
         // 定位的同时，触发回调
@@ -165,14 +159,12 @@
             }
         }
         
-        switch (self.direction) {
-            case DYLineFlowViewDerectionHorizontal:
-                [self.scrollView setContentOffset:CGPointMake(self.pageSize.width * self.autoPage, 0) animated:animate];
-                break;
-            case DYLineFlowViewDerectionVertical:
-                [self.scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.autoPage) animated:animate];
-                break;
+        if (self.isHorizontal) {
+            [self.scrollView setContentOffset:CGPointMake(self.pageSize.width * self.autoPage, 0) animated:animate];
+        } else {
+            [self.scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.autoPage) animated:animate];
         }
+        
         [self loadPagesAtContentOffset:self.scrollView.contentOffset];
         [self updateVisibleCellLayout];
     }
@@ -192,15 +184,10 @@
         cell.tag = actualPage;
         [self.cells replaceObjectAtIndex:page withObject:cell];
         
-        switch (self.direction) {
-            case DYLineFlowViewDerectionHorizontal:
-                cell.frame = CGRectMake(self.pageSize.width * page, 0, self.pageSize.width, self.pageSize.height);
-                break;
-            case DYLineFlowViewDerectionVertical:
-                cell.frame = CGRectMake(0, self.pageSize.height * page, self.pageSize.width, self.pageSize.height);
-                break;
-            default:
-                break;
+        if (self.isHorizontal) {
+            cell.frame = CGRectMake(self.pageSize.width * page, 0, self.pageSize.width, self.pageSize.height);
+        } else {
+            cell.frame = CGRectMake(0, self.pageSize.height * page, self.pageSize.width, self.pageSize.height);
         }
         
         if (!cell.superview) {
@@ -211,55 +198,9 @@
 
 - (void)loadPagesAtContentOffset:(CGPoint)offset {
     // 计算visibleRange
-    CGPoint startPoint = CGPointMake(offset.x - self.scrollView.frame.origin.x, offset.y - self.scrollView.frame.origin.y);
-    CGPoint endPoint = CGPointMake(startPoint.x + self.bounds.size.width, startPoint.y + self.bounds.size.height);
-    
-    switch (self.direction) {
-        case DYLineFlowViewDerectionHorizontal: {
-            NSInteger startIndex = 0;
-            for (NSInteger i = 0; i < self.cells.count; i++) {
-                if (self.pageSize.width * (i + 1) > startPoint.x) {
-                    startIndex = i;
-                    break;
-                }
-            }
-            
-            NSInteger endIndex = startIndex;
-            for (NSInteger i = startIndex; i < self.cells.count; i++) {
-                // 如果都不超过则取最后一个
-                if ((self.pageSize.width * (i + 1) < endPoint.x && self.pageSize.width * (i + 2) >= endPoint.x) || i + 2 == self.cells.count) {
-                    endIndex = i + 1;// i+2 是以个数，所以其index需要减去1
-                    break;
-                }
-            }
-            
-            [self loadPagesStart:startIndex end:endIndex];
-            break;
-        }
-        case DYLineFlowViewDerectionVertical: {
-            NSInteger startIndex = 0;
-            for (NSInteger i = 0; i < self.cells.count; i++) {
-                if (self.pageSize.height * (i + 1) > startPoint.y) {
-                    startIndex = i;
-                    break;
-                }
-            }
-            
-            NSInteger endIndex = startIndex;
-            for (NSInteger i = startIndex; i < self.cells.count; i++) {
-                // 如果都不超过则取最后一个
-                if ((self.pageSize.height * (i + 1) < endPoint.y && self.pageSize.height * (i + 2) >= endPoint.y) || i + 2 == self.cells.count) {
-                    endIndex = i + 1;// i+2 是以个数，所以其index需要减去1
-                    break;
-                }
-            }
-            
-            [self loadPagesStart:startIndex end:endIndex];
-            break;
-        }
-        default:
-            break;
-    }
+    NSInteger startIndex = [self startIndexAtContentOffset:offset];
+    NSInteger endIndex = [self endIndexAtContentOffset:offset startIndex:startIndex];
+    [self loadPagesStart:startIndex end:endIndex];
 }
 
 - (void)loadPagesStart:(NSInteger)startIndex end:(NSInteger)endIndex {
@@ -296,50 +237,15 @@
         bottomInset = bottomInset + (self.pageSize.height - scaleSize.height) / 2;
     }
     
-    switch (self.direction) {
-        case DYLineFlowViewDerectionHorizontal: {
-            CGFloat offset = self.scrollView.contentOffset.x;
-            for (NSInteger i = self.visibleRange.location; i < self.visibleRange.location + self.visibleRange.length; i++) {
-                UIView *cell = [self.cells objectAtIndex:i];
-                // 计算缩放比例
-                CGFloat scale = [self scaleWithOrigin:cell.frame.origin.x offset:offset inset:leftInset];
-                // 如果没有缩小效果的情况下的本该的Frame
-                CGRect originCellFrame = CGRectMake(self.pageSize.width * i, 0, self.pageSize.width, self.pageSize.height);
-                [self updateCell:cell originFrame:originCellFrame scale:scale edgeInset:UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)];
-            }
-            break;
-        }
-        case DYLineFlowViewDerectionVertical: {
-            CGFloat offset = self.scrollView.contentOffset.y;
-            
-            for (NSInteger i = self.visibleRange.location; i < self.visibleRange.location + self.visibleRange.length; i++) {
-                UIView *cell = [self.cells objectAtIndex:i];
-                // 计算缩放比例
-                CGFloat scale = [self scaleWithOrigin:cell.frame.origin.y offset:offset inset:topInset];
-                // 如果没有缩小效果的情况下的本该的Frame
-                CGRect originCellFrame = CGRectMake(0, self.pageSize.height * i, self.pageSize.width, self.pageSize.height);
-                [self updateCell:cell originFrame:originCellFrame scale:scale edgeInset:UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)];
-            }
-        }
-        default:
-            break;
+    CGFloat scaleInset = self.isHorizontal ? leftInset : topInset;
+    for (NSInteger i = self.visibleRange.location; i < self.visibleRange.location + self.visibleRange.length; i++) {
+        UIView *cell = [self.cells objectAtIndex:i];
+        // 计算缩放比例
+        CGFloat scale = [self scaleOfCell:cell inset:scaleInset];
+        // 如果没有缩小效果的情况下的本该的Frame
+        CGRect originCellFrame = [self originCellFrameAtPage:i];
+        [self updateCell:cell originFrame:originCellFrame scale:scale edgeInset:UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)];
     }
-}
-
-/// 计算显示比例
-- (CGFloat)scaleWithOrigin:(CGFloat)origin offset:(CGFloat)offset inset:(CGFloat)inset {
-    // 这个值是非矫正后的
-    CGFloat delta = fabs(origin - offset);
-    
-    // 只有临近的前后两个才需要比例计算
-    CGFloat scale = 1;
-    if (delta < self.pageSize.width) {
-        // 矫正临近两个元素的相对坐标
-        origin = origin - inset;
-        delta = fabs(origin - offset);
-        scale = delta / self.pageSize.width;
-    }
-    return scale;
 }
 
 /// 更新卡片布局
@@ -386,60 +292,138 @@
     if (self.originPageCount == 0) {
         return;
     }
-    NSInteger pageIndex;
-    switch (self.direction) {
-        case DYLineFlowViewDerectionHorizontal:
-            pageIndex = (NSInteger)round(self.scrollView.contentOffset.x / self.pageSize.width) % self.originPageCount;
-            break;
-        case DYLineFlowViewDerectionVertical:
-            pageIndex = (NSInteger)round(self.scrollView.contentOffset.y / self.pageSize.height) % self.originPageCount;
-            break;
-        default:
-            break;
-    }
+    [self updateCurrentPage];
     
-    if (self.isCarousel) {
-        if (self.originPageCount > 1) {
-            switch (self.direction) {
-                case DYLineFlowViewDerectionHorizontal: {
-                    if (scrollView.contentOffset.x / self.pageSize.width >= 2 * self.originPageCount) {
-                        [scrollView setContentOffset:CGPointMake(self.pageSize.width * self.originPageCount, 0) animated:NO];
-                        self.autoPage = self.originPageCount;
-                    }
-                    if (scrollView.contentOffset.x / self.pageSize.width <= self.originPageCount - 1) {
-                        [scrollView setContentOffset:CGPointMake((2 * self.originPageCount - 1) * self.pageSize.width, 0) animated:NO];
-                        self.autoPage = 2 * self.originPageCount;
-                    }
-                }
-                    break;
-                case DYLineFlowViewDerectionVertical: {
-                    if (scrollView.contentOffset.y / self.pageSize.height >= 2 * self.originPageCount) {
-                        [scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.originPageCount) animated:NO];
-                        self.autoPage = self.originPageCount;
-                    }
-                    if (scrollView.contentOffset.y / self.pageSize.height <= self.originPageCount - 1) {
-                        [scrollView setContentOffset:CGPointMake(0, (2 * self.originPageCount - 1) * self.pageSize.height) animated:NO];
-                        self.autoPage = 2 * self.originPageCount;
-                    }
-                }
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            pageIndex = 0;
-        }
-    }
+    [self adjustContentOffset:scrollView];
     
     [self loadPagesAtContentOffset:scrollView.contentOffset];
     [self updateVisibleCellLayout];
-        
+}
+
+- (void)updateCurrentPage {
+    NSInteger pageIndex;
+    if (self.isHorizontal) {
+        pageIndex = (NSInteger)round(self.scrollView.contentOffset.x / self.pageSize.width) % self.originPageCount;
+    } else {
+        pageIndex = (NSInteger)round(self.scrollView.contentOffset.y / self.pageSize.height) % self.originPageCount;
+    }
+    
+    if (self.originPageCount <= 1) {
+        pageIndex = 0;
+    }
     self.currentPage = pageIndex;
+}
+
+- (void)adjustContentOffset:(UIScrollView *)scrollView {
+    if (!self.isCarousel || self.originPageCount <= 1) {
+        return;
+    }
+    if (self.isHorizontal) {
+        
+        if (scrollView.contentOffset.x / self.pageSize.width >= 2 * self.originPageCount) {
+            [scrollView setContentOffset:CGPointMake(self.pageSize.width * self.originPageCount, 0) animated:NO];
+            self.autoPage = self.originPageCount;
+        }
+        if (scrollView.contentOffset.x / self.pageSize.width <= self.originPageCount - 1) {
+            [scrollView setContentOffset:CGPointMake((2 * self.originPageCount - 1) * self.pageSize.width, 0) animated:NO];
+            self.autoPage = 2 * self.originPageCount;
+        }
+    } else {
+        if (scrollView.contentOffset.y / self.pageSize.height >= 2 * self.originPageCount) {
+            [scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.originPageCount) animated:NO];
+            self.autoPage = self.originPageCount;
+        }
+        if (scrollView.contentOffset.y / self.pageSize.height <= self.originPageCount - 1) {
+            [scrollView setContentOffset:CGPointMake(0, (2 * self.originPageCount - 1) * self.pageSize.height) animated:NO];
+            self.autoPage = 2 * self.originPageCount;
+        }
+    }
+}
+
+#pragma mark - Page设置和更新 - Tool
+/// 计算显示比例
+- (CGFloat)scaleOfCell:(UIView *)cell inset:(CGFloat)inset {
+    CGFloat offset = self.scrollView.contentOffset.x;
+    CGFloat origin = cell.frame.origin.x;
+    CGFloat dimension = self.pageSize.width;
+    if (!self.isHorizontal) {
+        offset = self.scrollView.contentOffset.y;
+        origin = cell.frame.origin.y;
+        dimension = self.pageSize.height;
+    }
+    // 这个值是非矫正后的
+    CGFloat delta = fabs(origin - offset);
+    
+    // 只有临近的前后两个才需要比例计算
+    CGFloat scale = 1;
+    if (delta < dimension) {
+        // 矫正临近两个元素的相对坐标
+        origin = origin - inset;
+        delta = fabs(origin - offset);
+        scale = delta / dimension;
+    }
+    return scale;
+}
+
+/// 如果没有缩小效果的情况下的本该的Frame
+- (CGRect)originCellFrameAtPage:(NSInteger)page {
+    if (self.isHorizontal) {
+        return CGRectMake(self.pageSize.width * page, 0, self.pageSize.width, self.pageSize.height);
+    } else {
+        return CGRectMake(0, self.pageSize.height * page, self.pageSize.width, self.pageSize.height);
+    }
+}
+
+- (NSInteger)startIndexAtContentOffset:(CGPoint)offset {
+    CGPoint startPoint = CGPointMake(offset.x - self.scrollView.frame.origin.x, offset.y - self.scrollView.frame.origin.y);
+    
+    NSInteger startIndex = 0;
+    if (self.isHorizontal) {
+        for (NSInteger i = 0; i < self.cells.count; i++) {
+            if (self.pageSize.width * (i + 1) > startPoint.x) {
+                startIndex = i;
+                break;
+            }
+        }
+    } else {
+        for (NSInteger i = 0; i < self.cells.count; i++) {
+            if (self.pageSize.height * (i + 1) > startPoint.y) {
+                startIndex = i;
+                break;
+            }
+        }
+    }
+    return startIndex;
+}
+
+- (NSInteger)endIndexAtContentOffset:(CGPoint)offset startIndex:(NSInteger)startIndex {
+    CGPoint startPoint = CGPointMake(offset.x - self.scrollView.frame.origin.x, offset.y - self.scrollView.frame.origin.y);
+    CGPoint endPoint = CGPointMake(startPoint.x + self.bounds.size.width, startPoint.y + self.bounds.size.height);
+    NSInteger endIndex = startIndex;
+    if (self.isHorizontal) {
+        for (NSInteger i = startIndex; i < self.cells.count; i++) {
+            // 如果都不超过则取最后一个
+            if ((self.pageSize.width * (i + 1) < endPoint.x && self.pageSize.width * (i + 2) >= endPoint.x) || i + 2 == self.cells.count) {
+                endIndex = i + 1;// i+2 是以个数，所以其index需要减去1
+                break;
+            }
+        }
+    } else {
+        for (NSInteger i = startIndex; i < self.cells.count; i++) {
+            // 如果都不超过则取最后一个
+            if ((self.pageSize.height * (i + 1) < endPoint.y && self.pageSize.height * (i + 2) >= endPoint.y) || i + 2 == self.cells.count) {
+                endIndex = i + 1;// i+2 是以个数，所以其index需要减去1
+                break;
+            }
+        }
+    }
+    return endIndex;
 }
 
 #pragma mark - UIScrollViewDelegate
 /// 滚动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    NSLog(@"offset = %@", @(scrollView.contentOffset.y));
     [self updateLayout:scrollView];
 }
 
@@ -455,26 +439,58 @@
 
 /// 将要结束拖拽
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    CGPoint contentOffset = *targetContentOffset;
+    NSLog(@"offset = %@, velocity = %@, targetContentOffset = %@", @(scrollView.contentOffset.y), @(velocity.y), @(contentOffset.y));
+    
+    // 衡量维度
+    CGFloat dimension = self.isHorizontal ? self.pageSize.width : self.pageSize.height;
+    // 当前位置
+    CGFloat origin = self.isHorizontal ? scrollView.contentOffset.x : scrollView.contentOffset.y;
+    // 偏移位置
+    CGFloat offset = self.isHorizontal ? contentOffset.x : contentOffset.y;
+    // 移动中的位置，这里是向下取整，用来区别滚动参数
+    NSInteger currentPage = floor(origin / dimension);
+    // 运动速度
+    CGFloat speed = self.isHorizontal ? velocity.x : velocity.y;
+    // 预计距离
+    CGFloat distance = fabs(origin - offset);
+    
+    if (speed > 0) {
+        // 前进
+        if (self.currentPage != (currentPage % self.originPageCount)) {
+            if (distance > dimension / 2) {
+                currentPage = currentPage + 1;
+            }
+        } else {
+            currentPage = currentPage + 1;
+        }
+    } else {
+        // 倒退
+        if (self.currentPage != (currentPage % self.originPageCount)) {
+            if (distance < dimension / 2) {
+                currentPage = currentPage + 1;
+            }
+        }
+    }
+    if (self.isHorizontal) {
+        targetContentOffset->x = currentPage * dimension;
+    } else {
+        targetContentOffset->y = currentPage * dimension;
+    }
+    
     if (self.originPageCount > 1 && self.autoScroll && self.isCarousel) {
-        switch (self.direction) {
-            case DYLineFlowViewDerectionHorizontal: {
-                if (self.autoPage == floor(self.scrollView.contentOffset.x / self.pageSize.width)) {
-                    self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width) + 1;
-                } else {
-                    self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width);
-                }
+        if (self.isHorizontal) {
+            if (self.autoPage == floor(self.scrollView.contentOffset.x / self.pageSize.width)) {
+                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width) + 1;
+            } else {
+                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width);
             }
-                break;
-            case DYLineFlowViewDerectionVertical: {
-                if (self.autoPage == floor(self.scrollView.contentOffset.y / self.pageSize.height)) {
-                    self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height) + 1;
-                } else {
-                    self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height);
-                }
+        } else {
+            if (self.autoPage == floor(self.scrollView.contentOffset.y / self.pageSize.height)) {
+                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height) + 1;
+            } else {
+                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height);
             }
-                break;
-            default:
-                break;
         }
     }
 }
@@ -501,17 +517,10 @@
 
 - (void)autoNextPage {
     self.autoPage++;
-    switch (self.direction) {
-        case DYLineFlowViewDerectionHorizontal:{
-            [self.scrollView setContentOffset:CGPointMake(self.autoPage * self.pageSize.width, 0) animated:YES];
-            break;
-        }
-        case DYLineFlowViewDerectionVertical:{
-            [self.scrollView setContentOffset:CGPointMake(0, self.autoPage * self.pageSize.height) animated:YES];
-            break;
-        }
-        default:
-            break;
+    if (self.isHorizontal) {
+        [self.scrollView setContentOffset:CGPointMake(self.autoPage * self.pageSize.width, 0) animated:YES];
+    } else {
+        [self.scrollView setContentOffset:CGPointMake(0, self.autoPage * self.pageSize.height) animated:YES];
     }
 }
 
@@ -587,7 +596,7 @@
         _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         _scrollView.scrollsToTop = NO;
         _scrollView.delegate = self;
-        _scrollView.pagingEnabled = YES;
+//        _scrollView.pagingEnabled = YES;
         _scrollView.clipsToBounds = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
@@ -607,6 +616,10 @@
         _reusableCells = [NSMutableArray array];
     }
     return _reusableCells;
+}
+
+- (BOOL)isHorizontal {
+    return self.direction == DYLineFlowViewDerectionHorizontal;
 }
 
 @end

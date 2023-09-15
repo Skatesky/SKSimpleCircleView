@@ -26,7 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.view.backgroundColor   = [UIColor whiteColor];
-//    SKSimpleScrollView *simpleView = [[SKSimpleScrollView alloc] initWithFrame:CGRectMake(0, 100, 200, 200)];
+//    SKSimpleScrollView *simpleView = [[SKSimpleScrollView alloc] initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, 200)];
 //    [self.view addSubview:simpleView];
     
 //    SKCarouselView *carouselView = [[SKCarouselView alloc] initWithFrame:CGRectMake(0, 100, 200, 200) layout:self];
@@ -37,7 +37,7 @@
     
     
     self.imageArray = @[@"Yosemite00", @"Yosemite01", @"Yosemite02", @"Yosemite03", @"Yosemite04"];
-    
+
     DYLineFlowView *pageFlowView = [[DYLineFlowView alloc] initWithFrame:CGRectMake(0, 72, Width, Width * 9 / 16)];
     pageFlowView.layout = self;
     pageFlowView.delegate = self;
@@ -45,14 +45,14 @@
     pageFlowView.isCarousel = YES;
     pageFlowView.direction = DYLineFlowViewDerectionHorizontal;
     pageFlowView.autoScroll = NO;
-    pageFlowView.autoScrollDuration = 5;
-    
+    pageFlowView.autoScrollDuration = 2;
+
     //初始化pageControl
     UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, pageFlowView.frame.size.height - 32, Width, 8)];
     pageFlowView.pageControl = pageControl;
     [pageFlowView addSubview:pageControl];
     [pageFlowView reloadData];
-    
+
     [self.view addSubview:pageFlowView];
 }
 
@@ -79,6 +79,7 @@
 #pragma mark - DYLineFlowViewLayout
 - (CGSize)sizeForPageInFlowView:(DYLineFlowView *)flowView {
     return CGSizeMake(Width - 60, (Width - 60) * 9 / 16);
+//    return CGSizeMake((Width - 60) * 9 / 16, Width - 60);
 }
 
 //- (UIEdgeInsets)insetsForPageFlowView:(DYLineFlowView *)flowView {
