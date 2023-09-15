@@ -43,7 +43,7 @@
     pageFlowView.delegate = self;
     pageFlowView.datasource = self;
     pageFlowView.isCarousel = YES;
-    pageFlowView.direction = DYLineFlowViewDerectionHorizontal;
+    pageFlowView.direction = DYLineFlowViewDerectionVertical;
     pageFlowView.autoScroll = NO;
     pageFlowView.autoScrollDuration = 2;
 

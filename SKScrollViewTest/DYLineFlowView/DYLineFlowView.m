@@ -44,6 +44,9 @@
 /// 可见视图范围
 @property (nonatomic, assign) NSRange visibleRange;
 
+/// 开始拖动时的偏移
+@property (nonatomic, assign) CGPoint dragStartOffset;
+
 @end
 
 @implementation DYLineFlowView
@@ -287,55 +290,20 @@
     }
 }
 
-/// UIScrollView滚动需要更新布局
-- (void)updateLayout:(UIScrollView *)scrollView {
-    if (self.originPageCount == 0) {
-        return;
-    }
-    [self updateCurrentPage];
-    
-    [self adjustContentOffset:scrollView];
-    
-    [self loadPagesAtContentOffset:scrollView.contentOffset];
-    [self updateVisibleCellLayout];
-}
-
-- (void)updateCurrentPage {
-    NSInteger pageIndex;
-    if (self.isHorizontal) {
-        pageIndex = (NSInteger)round(self.scrollView.contentOffset.x / self.pageSize.width) % self.originPageCount;
-    } else {
-        pageIndex = (NSInteger)round(self.scrollView.contentOffset.y / self.pageSize.height) % self.originPageCount;
-    }
-    
-    if (self.originPageCount <= 1) {
-        pageIndex = 0;
-    }
-    self.currentPage = pageIndex;
-}
-
-- (void)adjustContentOffset:(UIScrollView *)scrollView {
-    if (!self.isCarousel || self.originPageCount <= 1) {
-        return;
-    }
-    if (self.isHorizontal) {
-        
-        if (scrollView.contentOffset.x / self.pageSize.width >= 2 * self.originPageCount) {
-            [scrollView setContentOffset:CGPointMake(self.pageSize.width * self.originPageCount, 0) animated:NO];
-            self.autoPage = self.originPageCount;
-        }
-        if (scrollView.contentOffset.x / self.pageSize.width <= self.originPageCount - 1) {
-            [scrollView setContentOffset:CGPointMake((2 * self.originPageCount - 1) * self.pageSize.width, 0) animated:NO];
-            self.autoPage = 2 * self.originPageCount;
-        }
-    } else {
-        if (scrollView.contentOffset.y / self.pageSize.height >= 2 * self.originPageCount) {
-            [scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.originPageCount) animated:NO];
-            self.autoPage = self.originPageCount;
-        }
-        if (scrollView.contentOffset.y / self.pageSize.height <= self.originPageCount - 1) {
-            [scrollView setContentOffset:CGPointMake(0, (2 * self.originPageCount - 1) * self.pageSize.height) animated:NO];
-            self.autoPage = 2 * self.originPageCount;
+- (void)updateAutoPage {
+    if (self.originPageCount > 1 && self.autoScroll && self.isCarousel) {
+        if (self.isHorizontal) {
+            if (self.autoPage == floor(self.scrollView.contentOffset.x / self.pageSize.width)) {
+                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width) + 1;
+            } else {
+                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width);
+            }
+        } else {
+            if (self.autoPage == floor(self.scrollView.contentOffset.y / self.pageSize.height)) {
+                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height) + 1;
+            } else {
+                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height);
+            }
         }
     }
 }
@@ -420,15 +388,73 @@
     return endIndex;
 }
 
+#pragma mark - 滚动调整
+/// UIScrollView滚动需要更新布局
+- (void)updateLayout:(UIScrollView *)scrollView {
+    if (self.originPageCount == 0) {
+        return;
+    }
+    [self adjustContentOffset:scrollView];
+    
+    [self loadPagesAtContentOffset:scrollView.contentOffset];
+    [self updateVisibleCellLayout];
+    
+    [self updateCurrentPage];
+}
+
+- (void)updateCurrentPage {
+    NSInteger pageIndex;
+    if (self.isHorizontal) {
+        pageIndex = (NSInteger)round(self.scrollView.contentOffset.x / self.pageSize.width) % self.originPageCount;
+    } else {
+        pageIndex = (NSInteger)round(self.scrollView.contentOffset.y / self.pageSize.height) % self.originPageCount;
+    }
+    
+    if (self.originPageCount <= 1) {
+        pageIndex = 0;
+    }
+    self.currentPage = pageIndex;
+}
+
+- (void)adjustContentOffset:(UIScrollView *)scrollView {
+    if (!self.isCarousel || self.originPageCount <= 1) {
+        return;
+    }
+    if (self.isHorizontal) {
+        if (scrollView.contentOffset.x / self.pageSize.width >= 2 * self.originPageCount) {
+            [scrollView setContentOffset:CGPointMake(self.pageSize.width * self.originPageCount, 0) animated:NO];
+            self.autoPage = self.originPageCount;
+        }
+        if (scrollView.contentOffset.x / self.pageSize.width <= self.originPageCount - 1) {
+            [scrollView setContentOffset:CGPointMake((2 * self.originPageCount - 1) * self.pageSize.width, 0) animated:NO];
+            self.autoPage = 2 * self.originPageCount;
+        }
+    } else {
+        if (scrollView.contentOffset.y / self.pageSize.height >= 2 * self.originPageCount) {
+            NSLog(@"调整偏移前 %@", @(scrollView.contentOffset.y));
+            [scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.originPageCount) animated:NO];
+            NSLog(@"调整偏移后 %@", @(scrollView.contentOffset.y));
+            self.autoPage = self.originPageCount;
+        }
+        if (scrollView.contentOffset.y / self.pageSize.height <= self.originPageCount - 1) {
+            NSLog(@"调整偏移前 %@", @(scrollView.contentOffset.y));
+            [scrollView setContentOffset:CGPointMake(0, (2 * self.originPageCount - 1) * self.pageSize.height) animated:NO];
+            NSLog(@"调整偏移后 %@", @(scrollView.contentOffset.y));
+            self.autoPage = 2 * self.originPageCount;
+        }
+    }
+}
+
 #pragma mark - UIScrollViewDelegate
 /// 滚动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    NSLog(@"offset = %@", @(scrollView.contentOffset.y));
     [self updateLayout:scrollView];
 }
 
 /// 将要开始拖拽
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.dragStartOffset = scrollView.contentOffset;
+    NSLog(@"开始拖动 = %@", @(self.isHorizontal ? self.dragStartOffset.x : self.dragStartOffset.y));
     [self stopTimer];
 }
 
@@ -440,12 +466,11 @@
 /// 将要结束拖拽
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     CGPoint contentOffset = *targetContentOffset;
-    NSLog(@"offset = %@, velocity = %@, targetContentOffset = %@", @(scrollView.contentOffset.y), @(velocity.y), @(contentOffset.y));
     
     // 衡量维度
     CGFloat dimension = self.isHorizontal ? self.pageSize.width : self.pageSize.height;
     // 当前位置
-    CGFloat origin = self.isHorizontal ? scrollView.contentOffset.x : scrollView.contentOffset.y;
+    CGFloat origin = self.isHorizontal ? self.dragStartOffset.x : self.dragStartOffset.y;
     // 偏移位置
     CGFloat offset = self.isHorizontal ? contentOffset.x : contentOffset.y;
     // 移动中的位置，这里是向下取整，用来区别滚动参数
@@ -454,50 +479,30 @@
     CGFloat speed = self.isHorizontal ? velocity.x : velocity.y;
     // 预计距离
     CGFloat distance = fabs(origin - offset);
-    
-    if (speed > 0) {
-        // 前进
-        if (self.currentPage != (currentPage % self.originPageCount)) {
-            if (distance > dimension / 2) {
-                currentPage = currentPage + 1;
-            }
-        } else {
-            currentPage = currentPage + 1;
-        }
-    } else {
-        // 倒退
-        if (self.currentPage != (currentPage % self.originPageCount)) {
-            if (distance < dimension / 2) {
-                currentPage = currentPage + 1;
-            }
-        }
-    }
-    if (self.isHorizontal) {
-        targetContentOffset->x = currentPage * dimension;
-    } else {
-        targetContentOffset->y = currentPage * dimension;
-    }
-    
-    if (self.originPageCount > 1 && self.autoScroll && self.isCarousel) {
-        if (self.isHorizontal) {
-            if (self.autoPage == floor(self.scrollView.contentOffset.x / self.pageSize.width)) {
-                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width) + 1;
-            } else {
-                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width);
-            }
-        } else {
-            if (self.autoPage == floor(self.scrollView.contentOffset.y / self.pageSize.height)) {
-                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height) + 1;
-            } else {
-                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height);
-            }
-        }
-    }
-}
 
-/// 结束滚动
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self updateLayout:scrollView];
+    if (distance > dimension + dimension / 2) {
+        
+//        NSLog(@"start = %@, velocity = %@, targetContentOffset = %@", @(origin), @(speed), @(offset));
+        /**
+         矫正偏移量：轮播中会调整ContentOffset，调整后，targetOffset还是调整前的值，会导致视图瞬间移动了多张。
+         这种情况在小视图上出现，大视图基本不会出现。
+        */
+        if (speed > 0) {
+            if (self.isHorizontal) {
+                targetContentOffset->x = self.dragStartOffset.x + dimension;
+            } else {
+                targetContentOffset->y = self.dragStartOffset.y + dimension;
+            }
+        } else {
+            if (self.isHorizontal) {
+                targetContentOffset->x = self.dragStartOffset.x - dimension;
+            } else {
+                targetContentOffset->y = self.dragStartOffset.y - dimension;
+            }
+        }
+    }
+    
+    [self updateAutoPage];
 }
 
 #pragma mark - 自动轮播
@@ -596,10 +601,11 @@
         _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         _scrollView.scrollsToTop = NO;
         _scrollView.delegate = self;
-//        _scrollView.pagingEnabled = YES;
+        _scrollView.pagingEnabled = YES;
         _scrollView.clipsToBounds = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
+        _scrollView.bounces = NO;
     }
     return _scrollView;
 }

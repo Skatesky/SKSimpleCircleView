@@ -57,138 +57,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0731038E-5723-426C-9C74-A6CA51D5C641"
+            uuid = "50A32598-1F33-420A-8CB5-ECF86E956586"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "520"
-            endingLineNumber = "520"
-            landmarkName = "-autoNextPage"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "0731038E-5723-426C-9C74-A6CA51D5C641 - 49bc8be01fe25a01"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DYLineFlowView autoNextPage]"
-                  moduleName = "SKScrollViewTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhanghuabing/Documents/Development/Test/SKScrollViewTest/SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "471"
-                  endingLineNumber = "471"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "0731038E-5723-426C-9C74-A6CA51D5C641 - 49bc8be01fe25832"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DYLineFlowView autoNextPage]"
-                  moduleName = "SKScrollViewTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhanghuabing/Documents/Development/Test/SKScrollViewTest/SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "488"
-                  endingLineNumber = "488"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "0731038E-5723-426C-9C74-A6CA51D5C641 - 49bc8be01fe25621"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DYLineFlowView autoNextPage]"
-                  moduleName = "SKScrollViewTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhanghuabing/Documents/Development/Test/SKScrollViewTest/SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "503"
-                  endingLineNumber = "503"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "0731038E-5723-426C-9C74-A6CA51D5C641 - 49bc8be01fe2578c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DYLineFlowView autoNextPage]"
-                  moduleName = "SKScrollViewTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhanghuabing/Documents/Development/Test/SKScrollViewTest/SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "498"
-                  endingLineNumber = "498"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "0731038E-5723-426C-9C74-A6CA51D5C641 - 49bc8be01fe25684"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DYLineFlowView autoNextPage]"
-                  moduleName = "SKScrollViewTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhanghuabing/Documents/Development/Test/SKScrollViewTest/SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "506"
-                  endingLineNumber = "506"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "0731038E-5723-426C-9C74-A6CA51D5C641 - 49bc8be01fe256a5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DYLineFlowView autoNextPage]"
-                  moduleName = "SKScrollViewTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhanghuabing/Documents/Development/Test/SKScrollViewTest/SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "507"
-                  endingLineNumber = "507"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "0731038E-5723-426C-9C74-A6CA51D5C641 - 49bc8be01fe25241"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DYLineFlowView autoNextPage]"
-                  moduleName = "SKScrollViewTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhanghuabing/Documents/Development/Test/SKScrollViewTest/SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "535"
-                  endingLineNumber = "535"
-                  offsetFromSymbolStart = "60">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "397B6127-4EDB-4E3A-9F56-85BC1A64EEC7"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "435"
+            endingLineNumber = "435"
             landmarkName = "-adjustContentOffset:"
             landmarkType = "7">
          </BreakpointContent>
@@ -196,32 +73,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "47EF5F1E-0EA4-43B5-B7CF-3941ADC8767E"
+            uuid = "8DDAE2C1-5C26-40B8-A5CE-875F6C7C1539"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
+            startingLineNumber = "441"
+            endingLineNumber = "441"
             landmarkName = "-adjustContentOffset:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9BA53970-9B85-43DE-8BF6-2178D3899BC3"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "458"
-            endingLineNumber = "458"
-            landmarkName = "-scrollViewWillEndDragging:withVelocity:targetContentOffset:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
