@@ -9,6 +9,8 @@
 #import "DYLineFlowView.h"
 #import "HWWeakTimer.h"
 
+static NSInteger kInitPage = -1;
+
 @interface DYLineFlowView () <UIScrollViewDelegate>
 
 /// 滚动视图
@@ -35,8 +37,11 @@
 /// 当前索引
 @property (nonatomic, assign, readwrite) NSInteger currentPage;
 
-/// 计时器用的索引
-@property (nonatomic, assign) NSInteger autoPage;
+/// 当前Cell
+@property (nonatomic, weak) UIView *currentCell;
+
+/// 实际索引
+@property (nonatomic, assign) NSInteger actualPage;
 
 /// 定时器
 @property (nonatomic, strong) NSTimer *timer;
@@ -73,11 +78,13 @@
     self.autoScroll = YES;
     self.autoScrollDuration = 3.0;
     self.scaleEdgeInsets = UIEdgeInsetsZero;
-    _currentPage = -1;
+    self.currentPage = kInitPage;
+    self.actualPage = kInitPage;
 }
 
 - (void)clean {
-    _currentPage = -1;
+    self.currentPage = kInitPage;
+    self.actualPage = kInitPage;
     self.visibleRange = NSMakeRange(0, 0);
     for (UIView *view in self.cells) {
         if ([view isKindOfClass:[UIView class]]) {
@@ -139,8 +146,7 @@
         }
         
         // 定位的同时，触发回调
-        self.currentPage = 0;
-        [self scrollToPage:self.currentPage resetAutoScroll:YES animate:NO];
+        [self scrollToPage:0 resetAutoScroll:YES animate:NO];
     }
 }
 
@@ -152,20 +158,21 @@
 /// 定位到某一页，reset: 是否重置计时器
 - (void)scrollToPage:(NSUInteger)page resetAutoScroll:(BOOL)reset animate:(BOOL)animate {
     if (page >= 0 && page < self.pageCount) {
-        if (reset) {
+        NSInteger actualPage = self.actualPage;
+        if (reset || actualPage == kInitPage) {
             [self stopTimer];
             if (self.isCarousel && self.originPageCount > 1) {
-                self.autoPage = page + self.originPageCount;
+                actualPage = page + self.originPageCount;
                 [self startTimer];
             } else {
-                self.autoPage = page;
+                actualPage = page;
             }
         }
         
         if (self.isHorizontal) {
-            [self.scrollView setContentOffset:CGPointMake(self.pageSize.width * self.autoPage, 0) animated:animate];
+            [self.scrollView setContentOffset:CGPointMake(self.pageSize.width * actualPage, 0) animated:animate];
         } else {
-            [self.scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.autoPage) animated:animate];
+            [self.scrollView setContentOffset:CGPointMake(0, self.pageSize.height * actualPage) animated:animate];
         }
         
         [self loadPagesAtContentOffset:self.scrollView.contentOffset];
@@ -247,19 +254,19 @@
         CGFloat scale = [self scaleOfCell:cell inset:scaleInset];
         // 如果没有缩小效果的情况下的本该的Frame
         CGRect originCellFrame = [self originCellFrameAtPage:i];
-        [self updateCell:cell originFrame:originCellFrame scale:scale edgeInset:UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)];
+        [self updateCell:cell page:(i % self.originPageCount) originFrame:originCellFrame scale:scale edgeInset:UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset)];
     }
 }
 
 /// 更新卡片布局
-- (void)updateCell:(UIView *)cell originFrame:(CGRect)originFrame scale:(CGFloat)scale edgeInset:(UIEdgeInsets)edgeInset {
+- (void)updateCell:(UIView *)cell page:(NSInteger)page originFrame:(CGRect)originFrame scale:(CGFloat)scale edgeInset:(UIEdgeInsets)edgeInset {
     UIEdgeInsets normalInset = UIEdgeInsetsZero;
     if ([self.layout respondsToSelector:@selector(insetsForPageFlowView:)]) {
         normalInset = [self.layout insetsForPageFlowView:self];
     }
     if (scale < 1) {
-        if ([self.delegate respondsToSelector:@selector(didChangeCell:visable:inFlowView:)]) {
-            [self.delegate didChangeCell:cell visable:1 - scale inFlowView:self];
+        if ([self.delegate respondsToSelector:@selector(didChangeCell:atPage:visable:inFlowView:)]) {
+            [self.delegate didChangeCell:cell atPage:page visable:1 - scale inFlowView:self];
         }
         CGFloat leftInset = edgeInset.left * scale + normalInset.left;
         CGFloat rightInset = edgeInset.right * scale + normalInset.right;
@@ -275,8 +282,8 @@
         }
         cell.frame = UIEdgeInsetsInsetRect(originFrame, UIEdgeInsetsMake(topInset, leftInset, bottomInset, rightInset));
     } else {
-        if ([self.delegate respondsToSelector:@selector(didChangeCell:visable:inFlowView:)]) {
-            [self.delegate didChangeCell:cell visable:0 inFlowView:self];
+        if ([self.delegate respondsToSelector:@selector(didChangeCell:atPage:visable:inFlowView:)]) {
+            [self.delegate didChangeCell:cell atPage:page visable:0 inFlowView:self];
         }
         normalInset = UIEdgeInsetsMake(normalInset.top + edgeInset.top, normalInset.left + edgeInset.left, normalInset.bottom + edgeInset.bottom, normalInset.right + edgeInset.right);
         if (self.scaleTransform) {
@@ -287,24 +294,6 @@
             );
         }
         cell.frame = UIEdgeInsetsInsetRect(originFrame, normalInset);
-    }
-}
-
-- (void)updateAutoPage {
-    if (self.originPageCount > 1 && self.autoScroll && self.isCarousel) {
-        if (self.isHorizontal) {
-            if (self.autoPage == floor(self.scrollView.contentOffset.x / self.pageSize.width)) {
-                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width) + 1;
-            } else {
-                self.autoPage = floor(self.scrollView.contentOffset.x / self.pageSize.width);
-            }
-        } else {
-            if (self.autoPage == floor(self.scrollView.contentOffset.y / self.pageSize.height)) {
-                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height) + 1;
-            } else {
-                self.autoPage = floor(self.scrollView.contentOffset.y / self.pageSize.height);
-            }
-        }
     }
 }
 
@@ -403,17 +392,56 @@
 }
 
 - (void)updateCurrentPage {
-    NSInteger pageIndex;
+    NSInteger page = self.actualPage;
+    CGFloat ratio = 1;
+    BOOL stop = NO;
     if (self.isHorizontal) {
-        pageIndex = (NSInteger)round(self.scrollView.contentOffset.x / self.pageSize.width) % self.originPageCount;
+        page = (NSInteger)round(self.scrollView.contentOffset.x / self.pageSize.width);
+        CGFloat offset = page * self.pageSize.width;
+        if (self.scrollView.contentOffset.x > offset) { // 左移
+            ratio = 1 - (self.scrollView.contentOffset.x - offset) * 2 / self.pageSize.width;
+        } else { // 右移
+            ratio = 1 - (offset - self.scrollView.contentOffset.x) * 2 / self.pageSize.width;
+        }
+        if (self.scrollView.contentOffset.x - page * self.pageSize.width == 0) {
+            stop = YES;
+        }
     } else {
-        pageIndex = (NSInteger)round(self.scrollView.contentOffset.y / self.pageSize.height) % self.originPageCount;
+        page = (NSInteger)round(self.scrollView.contentOffset.y / self.pageSize.height);
+        CGFloat offset = page * self.pageSize.height;
+        if (self.scrollView.contentOffset.y > offset) { // 上移
+            ratio = 1 - (self.scrollView.contentOffset.y - offset) * 2 / self.pageSize.height;
+        } else { // 下移
+            ratio = 1 - (offset - self.scrollView.contentOffset.y) * 2 / self.pageSize.height;
+        }
+        if (self.scrollView.contentOffset.y - page * self.pageSize.height == 0) {
+            stop = YES;
+        }
     }
     
-    if (self.originPageCount <= 1) {
-        pageIndex = 0;
+    if (self.actualPage != page) {
+        self.actualPage = page;
+        if (page >= 0 && page < self.cells.count) {
+            self.currentCell = [self.cells objectAtIndex:page];
+        }
     }
-    self.currentPage = pageIndex;
+    
+    NSInteger currentPage = page % self.originPageCount;
+    // 回调多次
+    if ([self.delegate respondsToSelector:@selector(willScrollToPage:cell:ratio:inFlowView:)]) {
+        [self.delegate willScrollToPage:currentPage cell:self.currentCell ratio:ratio inFlowView:self];
+    }
+    
+    if (stop) { // 刚好为整数的时候计算page
+        // 避免多次回调
+        if (self.currentPage != currentPage) {
+            self.currentPage = currentPage;
+            if ([self.delegate respondsToSelector:@selector(didScrollToPage:cell:inFlowView:)]) {
+                [self.delegate didScrollToPage:self.currentPage cell:self.currentCell inFlowView:self];
+            }
+            [self.pageControl setCurrentPage:self.currentPage];
+        }
+    }
 }
 
 - (void)adjustContentOffset:(UIScrollView *)scrollView {
@@ -423,24 +451,16 @@
     if (self.isHorizontal) {
         if (scrollView.contentOffset.x / self.pageSize.width >= 2 * self.originPageCount) {
             [scrollView setContentOffset:CGPointMake(self.pageSize.width * self.originPageCount, 0) animated:NO];
-            self.autoPage = self.originPageCount;
         }
         if (scrollView.contentOffset.x / self.pageSize.width <= self.originPageCount - 1) {
             [scrollView setContentOffset:CGPointMake((2 * self.originPageCount - 1) * self.pageSize.width, 0) animated:NO];
-            self.autoPage = 2 * self.originPageCount;
         }
     } else {
         if (scrollView.contentOffset.y / self.pageSize.height >= 2 * self.originPageCount) {
-            NSLog(@"调整偏移前 %@", @(scrollView.contentOffset.y));
             [scrollView setContentOffset:CGPointMake(0, self.pageSize.height * self.originPageCount) animated:NO];
-            NSLog(@"调整偏移后 %@", @(scrollView.contentOffset.y));
-            self.autoPage = self.originPageCount;
         }
         if (scrollView.contentOffset.y / self.pageSize.height <= self.originPageCount - 1) {
-            NSLog(@"调整偏移前 %@", @(scrollView.contentOffset.y));
             [scrollView setContentOffset:CGPointMake(0, (2 * self.originPageCount - 1) * self.pageSize.height) animated:NO];
-            NSLog(@"调整偏移后 %@", @(scrollView.contentOffset.y));
-            self.autoPage = 2 * self.originPageCount;
         }
     }
 }
@@ -501,8 +521,6 @@
             }
         }
     }
-    
-    [self updateAutoPage];
 }
 
 #pragma mark - 自动轮播
@@ -521,11 +539,11 @@
 }
 
 - (void)autoNextPage {
-    self.autoPage++;
+    self.actualPage++;
     if (self.isHorizontal) {
-        [self.scrollView setContentOffset:CGPointMake(self.autoPage * self.pageSize.width, 0) animated:YES];
+        [self.scrollView setContentOffset:CGPointMake(self.actualPage * self.pageSize.width, 0) animated:YES];
     } else {
-        [self.scrollView setContentOffset:CGPointMake(0, self.autoPage * self.pageSize.height) animated:YES];
+        [self.scrollView setContentOffset:CGPointMake(0, self.actualPage * self.pageSize.height) animated:YES];
     }
 }
 
@@ -583,16 +601,6 @@
 - (void)setOriginPageCount:(NSInteger)originPageCount {
     _originPageCount = originPageCount;
     [self.pageControl setNumberOfPages:self.originPageCount];
-}
-
-- (void)setCurrentPage:(NSInteger)currentPage {
-    if (_currentPage != currentPage && currentPage >= 0) {
-        _currentPage = currentPage;
-        if ([self.delegate respondsToSelector:@selector(didScrollToPage:inFlowView:)]) {
-            [self.delegate didScrollToPage:currentPage inFlowView:self];
-        }
-        [self.pageControl setCurrentPage:currentPage];
-    }
 }
 
 #pragma mark - Getter

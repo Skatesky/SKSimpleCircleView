@@ -24,7 +24,9 @@ typedef NS_ENUM(NSInteger, DYLineFlowViewDerection)
 /**
  轮播视图，也可以不轮播。
  @abstract 可以实现两种样式的轮播，一种是相同大小的，一种是中间缩放的。
+ @discussion 一般的缩放方案是通过仿射变换实现，会导致间距出现变化。这个方案是解决此问题的一个补充。
  @discussion 此轮播的实现，scrollview的大小是pageSize，对于中间缩放的样式，是通过clipsToBounds=NO来让两边多处的卡片显示出来，这点使用者需要注意下。
+ 同时，此方案用了pagingEnabled，在无限轮播中会有个小问题：调整偏移时，当前的卡片不是很好滑动，基本上可以忽视，如果不能接受，可以尝试其他方案，比如iCarousel。
  */
 @interface DYLineFlowView : UIView
 
@@ -115,11 +117,22 @@ typedef NS_ENUM(NSInteger, DYLineFlowViewDerection)
 @protocol DYLineFlowViewDelegate <NSObject>
 
 @optional
-/// 滚动回调，定位到中间页
+/// 滚动回调，加上了移动程度，一次滚动触发多次
+/// @discussion 当前没有停止滚动，超过一半，更新page
 /// - Parameters:
 ///   - page: 中间页的索引
+///   - cell: cell视图
+///   - ratio: 比率
 ///   - flowView: 轮播视图
-- (void)didScrollToPage:(NSInteger)page inFlowView:(DYLineFlowView *)flowView;
+- (void)willScrollToPage:(NSInteger)page cell:(UIView *)cell ratio:(CGFloat)ratio inFlowView:(DYLineFlowView *)flowView;
+
+/// 定位到中间页，page改变才会触发
+/// @discussion 已经停止滚动
+/// - Parameters:
+///   - page: 中间页的索引
+///   - cell: cell视图
+///   - flowView: 轮播视图
+- (void)didScrollToPage:(NSInteger)page cell:(UIView *)cell inFlowView:(DYLineFlowView *)flowView;
 
 /// 点击某个卡片
 /// - Parameters:
@@ -131,9 +144,10 @@ typedef NS_ENUM(NSInteger, DYLineFlowViewDerection)
 /// 可见性的变化，这里的可见性是相对于容器的，并不一定是看不到，因为clipsToBounds=NO，超出部分也是会显示的
 /// - Parameters:
 ///   - cell: 显示的Cell
+///   - page: 卡片索引
 ///   - visable: 可见性，中间的不一定严格为1
 ///   - flowView: 轮播视图
-- (void)didChangeCell:(UIView *)cell visable:(CGFloat)visable inFlowView:(DYLineFlowView *)flowView;
+- (void)didChangeCell:(UIView *)cell atPage:(NSInteger)page visable:(CGFloat)visable inFlowView:(DYLineFlowView *)flowView;
 
 @end
 

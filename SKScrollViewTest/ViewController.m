@@ -43,8 +43,8 @@
     pageFlowView.delegate = self;
     pageFlowView.datasource = self;
     pageFlowView.isCarousel = YES;
-    pageFlowView.direction = DYLineFlowViewDerectionVertical;
-    pageFlowView.autoScroll = NO;
+    pageFlowView.direction = DYLineFlowViewDerectionHorizontal;
+    pageFlowView.autoScroll = YES;
     pageFlowView.autoScrollDuration = 2;
 
     //初始化pageControl
@@ -78,8 +78,7 @@
 
 #pragma mark - DYLineFlowViewLayout
 - (CGSize)sizeForPageInFlowView:(DYLineFlowView *)flowView {
-    return CGSizeMake(Width - 60, (Width - 60) * 9 / 16);
-//    return CGSizeMake((Width - 60) * 9 / 16, Width - 60);
+    return CGSizeMake(213, 120);
 }
 
 //- (UIEdgeInsets)insetsForPageFlowView:(DYLineFlowView *)flowView {
@@ -87,19 +86,23 @@
 //}
 
 //- (UIEdgeInsets)insetsForScalePageFlowView:(DYLineFlowView *)flowView {
-//    return UIEdgeInsetsMake(10, 10, 10, 10);
+//    return UIEdgeInsetsMake(5, 0, 5, 0);
 //}
 
 - (CGSize)sizeForScalePageInFlowView:(DYLineFlowView *)flowView {
-    return CGSizeMake(Width - 60 - 60, (Width - 60) * 9 / 16 - 40);
+    return CGSizeMake(196, 110);
 }
 
 #pragma mark - DYLineFlowViewDelegate
-- (void)didScrollToPage:(NSInteger)page inFlowView:(DYLineFlowView *)flowView {
+- (void)didScrollToPage:(NSInteger)page cell:(nonnull UIView *)cell inFlowView:(DYLineFlowView *)flowView {
     NSLog(@"===zhb: 滚动 %@", @(page));
 }
 
-- (void)didChangeCell:(UIView *)cell visable:(CGFloat)visable inFlowView:(DYLineFlowView *)flowView {
+- (void)willScrollToPage:(NSInteger)page cell:(nonnull UIView *)cell ratio:(CGFloat)ratio inFlowView:(DYLineFlowView *)flowView {
+    NSLog(@"===zhb: 可见性 %@", @(ratio));
+}
+
+- (void)didChangeCell:(UIView *)cell atPage:(NSInteger)page visable:(CGFloat)visable inFlowView:(DYLineFlowView *)flowView {
     CGFloat alpha = visable + 0.2;
     if (alpha > 1) {
         alpha = 1;

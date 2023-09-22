@@ -57,15 +57,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "50A32598-1F33-420A-8CB5-ECF86E956586"
+            uuid = "895483C3-6E00-497B-9103-8396E71751FC"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
+            startingLineNumber = "453"
+            endingLineNumber = "453"
             landmarkName = "-adjustContentOffset:"
             landmarkType = "7">
          </BreakpointContent>
@@ -73,16 +73,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8DDAE2C1-5C26-40B8-A5CE-875F6C7C1539"
+            uuid = "3F6A77A5-110B-4FF7-9619-D9A972C8E82F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441"
+            startingLineNumber = "456"
+            endingLineNumber = "456"
             landmarkName = "-adjustContentOffset:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9EBD13F0-098D-40EF-B918-0D4C3E803246"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SKScrollViewTest/DYLineFlowView/DYLineFlowView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "388"
+            endingLineNumber = "388"
+            landmarkName = "-updateLayout:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
