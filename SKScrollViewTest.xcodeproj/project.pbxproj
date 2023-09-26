@@ -29,6 +29,7 @@
 		23E3FE8A2AB0419700770F13 /* SKCoverFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE882AB0419700770F13 /* SKCoverFlowView.m */; };
 		23E3FE8B2AB0419700770F13 /* SKCoverBoundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE892AB0419700770F13 /* SKCoverBoundView.m */; };
 		23E3FE8F2AB042AF00770F13 /* SKCarouselViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E3FE8E2AB042AF00770F13 /* SKCarouselViewLayout.m */; };
+		23EFB2F32AC1A15900DE679B /* DYLineScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB2F22AC1A15900DE679B /* DYLineScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,8 @@
 		23E3FE892AB0419700770F13 /* SKCoverBoundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoverBoundView.m; sourceTree = "<group>"; };
 		23E3FE8D2AB042AF00770F13 /* SKCarouselViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKCarouselViewLayout.h; sourceTree = "<group>"; };
 		23E3FE8E2AB042AF00770F13 /* SKCarouselViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKCarouselViewLayout.m; sourceTree = "<group>"; };
+		23EFB2F12AC1A15900DE679B /* DYLineScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYLineScrollView.h; sourceTree = "<group>"; };
+		23EFB2F22AC1A15900DE679B /* DYLineScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYLineScrollView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +165,8 @@
 				23B5C86E2AB1B17F00058DA4 /* HWWeakTimer.m */,
 				23B5AC8F2AB19A6D00058DA4 /* DYLineFlowView.h */,
 				23B5AC902AB19A6D00058DA4 /* DYLineFlowView.m */,
+				23EFB2F12AC1A15900DE679B /* DYLineScrollView.h */,
+				23EFB2F22AC1A15900DE679B /* DYLineScrollView.m */,
 			);
 			path = DYLineFlowView;
 			sourceTree = "<group>";
@@ -292,6 +297,7 @@
 				23E3FE8A2AB0419700770F13 /* SKCoverFlowView.m in Sources */,
 				23E3FE7F2AB0415900770F13 /* SKSimpleScrollView.m in Sources */,
 				23E3FE8B2AB0419700770F13 /* SKCoverBoundView.m in Sources */,
+				23EFB2F32AC1A15900DE679B /* DYLineScrollView.m in Sources */,
 				23E3FE8F2AB042AF00770F13 /* SKCarouselViewLayout.m in Sources */,
 				23E3FE7E2AB0415900770F13 /* SKSimpleSlider.m in Sources */,
 				2345A6291DE4565D00D81768 /* main.m in Sources */,

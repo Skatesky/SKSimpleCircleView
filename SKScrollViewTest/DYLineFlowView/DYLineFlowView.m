@@ -8,13 +8,14 @@
 
 #import "DYLineFlowView.h"
 #import "HWWeakTimer.h"
+#import "DYLineScrollView.h"
 
 static NSInteger kInitPage = -1;
 
-@interface DYLineFlowView () <UIScrollViewDelegate>
+@interface DYLineFlowView () <UIScrollViewDelegate, DYLineScrollViewDelegate>
 
 /// 滚动视图
-@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) DYLineScrollView *scrollView;
 
 /// 当前使用的Cell
 @property (nonatomic, strong) NSMutableArray *cells;
@@ -597,6 +598,15 @@ static NSInteger kInitPage = -1;
     }
 }
 
+#pragma mark - DYLineScrollViewDelegate
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event inScrollView:(DYLineScrollView *)scrollView {
+    CGRect contentRect = CGRectMake(0, 0, self.scrollView.contentSize.width > 0 ? self.scrollView.contentSize.width : self.scrollView.frame.size.width, self.scrollView.contentSize.height > 0 ? self.scrollView.contentSize.height : self.scrollView.frame.size.height);
+    if (CGRectContainsPoint(contentRect, point)) {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - Setter
 - (void)setOriginPageCount:(NSInteger)originPageCount {
     _originPageCount = originPageCount;
@@ -604,11 +614,12 @@ static NSInteger kInitPage = -1;
 }
 
 #pragma mark - Getter
-- (UIScrollView *)scrollView {
+- (DYLineScrollView *)scrollView {
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _scrollView = [[DYLineScrollView alloc] initWithFrame:self.bounds];
         _scrollView.scrollsToTop = NO;
         _scrollView.delegate = self;
+        _scrollView.dyLineScrollViewDelegate = self;
         _scrollView.pagingEnabled = YES;
         _scrollView.clipsToBounds = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
